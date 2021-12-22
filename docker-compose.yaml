@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: myuser
+      POSTGRES_DB: db
+
+    ports:
+    - 5434:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8078:8080
+
+  backend:
+    restart: on-failure:10
+    depends_on:
+      - db
+      - adminer
+    image: diplom
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+  backend_migrate:
+    restart: 'no'
+    depends_on:
+      - db
+      - adminer
+    image: diplom
+    command: 'python /Diplom/shop/manage.py migrate'
+    ports:
+      - 8001:8000
+
