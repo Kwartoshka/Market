@@ -35,5 +35,8 @@
 В папке с проектом запустить программу командой
 ````
     sudo docker-compose up
-  
-Также к проекту приложен json файл для импорта в Postman.
+````
+
+drf-spectacular:
+````
+  sudo docker run -p 80:8080 -e SWAGGER_JSON=/schema.yml -v ${PWD}/schema.yml:/schema.yml swaggerapi/swagger-ui

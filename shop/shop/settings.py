@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_rest_passwordreset',
     'backend',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10/day',
         'user': '100/day'
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 
 }
@@ -158,3 +160,10 @@ EMAIL_HOST_PASSWORD = 'Zazinka13'
 EMAIL_PORT = '465'
 EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Market API',
+    'DESCRIPTION': 'Readme.md',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}
