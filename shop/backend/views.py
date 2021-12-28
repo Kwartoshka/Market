@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import ValidationError
 import yaml
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.viewsets import ModelViewSet
 from yaml import Loader, FullLoader
 from django.contrib.auth import authenticate
@@ -27,6 +28,7 @@ from backend.filters import ProductInfoFilter
 
 
 class PartnerUpdate(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -76,6 +78,8 @@ class PartnerUpdate(APIView):
 
 class RegisterUser(APIView):
 
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+
     def post(self, request):
         required_data = ['first_name', 'last_name', 'email', 'password', 'position', 'company', ]
         accepted = True
@@ -110,6 +114,8 @@ class RegisterUser(APIView):
 
 
 class ConfirmUser(APIView):
+
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def post(self, request):
 
@@ -146,6 +152,8 @@ class ConfirmUser(APIView):
 
 class UserView(APIView):
 
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
+
     def get(self, request):
         if not request.user.is_authenticated:
             return JsonResponse({'Status': 'You are not logged in'}, status=403)
@@ -155,6 +163,8 @@ class UserView(APIView):
 
 
 class LoginUser(APIView):
+
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def post(self, request):
         required_data = ['email', 'password']
@@ -188,16 +198,19 @@ class LoginUser(APIView):
 
 
 class CategoryViewSet(ModelViewSet):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class ShopViewSet(ModelViewSet):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     queryset = Shop.objects.all().filter(state=True)
     serializer_class = ShopSerializer
 
 
 class ProductInfoViewSet(ModelViewSet):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     queryset = ProductInfo.objects.all()
     serializer_class = ProductInfoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -205,6 +218,7 @@ class ProductInfoViewSet(ModelViewSet):
 
 
 class CartView(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -322,6 +336,7 @@ class CartView(APIView):
 
 
 class PartnerState(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -358,6 +373,7 @@ class PartnerState(APIView):
 
 
 class PartnerOrders(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -379,6 +395,7 @@ class PartnerOrders(APIView):
 
 
 class ContactView(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -463,6 +480,7 @@ class ContactView(APIView):
 
 
 class OrderView(APIView):
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
